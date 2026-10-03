@@ -21,8 +21,8 @@ $catalogJson = json_encode(
   <main class="page-shell">
     <header class="intro">
       <p class="eyebrow">A digital prayer wheel</p>
-      <h1>A billion moments of compassion</h1>
-      <p class="lede">With each turn, a billion prayers pass through memory—without leaving a trace on storage.</p>
+      <h1>Countless moments of compassion</h1>
+      <p class="lede">With each turn, countless prayers pass through memory—without leaving a trace on storage.</p>
     </header>
 
     <section class="wheel-section" aria-labelledby="wheel-heading">

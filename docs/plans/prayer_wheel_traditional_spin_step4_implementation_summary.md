@@ -37,3 +37,16 @@
 - Notes:
   - Real-browser timing (10 plain and 10 re-click trials), visual smoothness on rapid clicks, keyboard use and reduced-motion still need a desktop check; no browser is available here.
   - A click in the short window after `stop` is sent but before `complete` arrives only resets a timer that `finishCycle` then clears, so that click is absorbed.
+
+## Stage 4 - Truthful copy and release verification
+
+- Changes:
+  - Page heading and lede now say "countless" instead of "a billion"; the status text already reports the real count.
+  - `README.md` describes the ~5-second time-boxed spin, the re-click that restarts the timer, and the real count shown at rest.
+- Verification:
+  - `grep` for "billion" and "1,000,000,000" outside the plan docs finds nothing.
+  - `grep` of `public` and `app` finds no `localStorage`, `sessionStorage`, `indexedDB`, cookies, network calls or console logging; the server only serves the page and static files.
+  - `php -l public/index.php` passed; the served page returned HTTP 200 with the new heading.
+- Notes:
+  - Still needed from a person at a desktop browser: the Step 2 timing trials (5 s ± 0.5 s plain; 10 of 10 re-click trials), the visual look at desktop and phone widths, keyboard activation, reduced motion, and an empty-storage check in dev tools.
+  - Earlier MVP plan docs still describe the exact-billion behavior; they are historical and were left unchanged.
