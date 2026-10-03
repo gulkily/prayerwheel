@@ -64,3 +64,16 @@
 - Notes:
   - Whether the speeds and linear slowdown feel right needs a look in a real browser; tune the three constants if not.
   - Reduced-motion visitors have no animation, so they get no acceleration cue beyond the existing glow.
+
+## Follow-up - Simpler interface and larger wheel
+
+- Changes:
+  - Removed the "A digital prayer wheel" and "A prayer in this wheel" eyebrows, the lede, the catalog note and the "Ready for your intention" status text (the status line stays for spin counts and errors).
+  - Removed the "Spin the wheel" caption and ☸ glyph that covered the drum; the button keeps a screen-reader-only label. Added two gold bands on the drum instead.
+  - Wheel dimensions are now in `em` and scale with viewport (`font-size` on `.prayer-wheel`), about 1.7x larger than before; the heading is smaller and spacing is tighter so the wheel and prayer card fit in a 900 px tall window.
+- Verification:
+  - `php -l public/index.php` and `node --check public/assets/app.js` passed; the Node harness still passes.
+  - Headless Chrome screenshot at 1000x900 shows the heading, large wheel and prayer card with no scrolling and no text over the wheel.
+- Notes:
+  - A 390 px wide headless screenshot appeared cropped, which looks like headless Chrome's minimum window width rather than overflow; confirm on a real phone or with device emulation.
+  - The drum scroll distance in `app.js` is now `4.5em` to match the stylesheet.

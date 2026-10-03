@@ -20,7 +20,7 @@
   let lastStatusAt = 0;
 
   const messages = {
-    ready: 'The wheel is ready for your intention.',
+    ready: '',
     active: 'The wheel is carrying your prayers through memory.',
     complete: 'The wheel is at rest. May its intention travel with you.',
     retry: 'The cycle paused before completion. You may turn the wheel again.',
@@ -45,7 +45,7 @@
     }
 
     spinAnimation = panels.animate(
-      [{ backgroundPosition: '0 0, 0 0' }, { backgroundPosition: '0 0, 4.5rem 0' }],
+      [{ backgroundPosition: '0 0, 0 0' }, { backgroundPosition: '0 0, 4.5em 0' }],
       { duration: 1200, iterations: Infinity },
     );
     spinAnimation.playbackRate = spinSpeed;
