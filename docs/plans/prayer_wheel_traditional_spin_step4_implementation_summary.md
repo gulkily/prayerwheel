@@ -96,3 +96,13 @@
   - `node --check public/assets/app.js` passed; the status string contains a newline before the closing sentence.
 - Notes:
   - Not checked in a real browser after a completed spin.
+
+## Follow-up - Wheel fills the viewport
+
+- Changes:
+  - The wheel's `font-size` (which scales all its `em` dimensions) is now `min(4.2dvh, 7vw)` with a `vh` fallback, so it grows to fill the viewport height or width, whichever is limiting; the old size cap was removed.
+- Verification:
+  - Headless Chrome screenshots at 1400x800 and 600x900 show the wheel filling the first screen from top to near the bottom, with the description starting just below it.
+- Notes:
+  - The description and prayer card now sit below the fold and need a scroll.
+  - Very short, wide windows make the wheel small because height is the limit.

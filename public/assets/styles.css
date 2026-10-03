@@ -19,7 +19,7 @@ button { font: inherit; }
 .page-shell {
   width: min(100% - 2rem, 44rem);
   margin: 0 auto;
-  padding: 1rem 0 2rem;
+  padding: .5rem 0 2rem;
   text-align: center;
 }
 
@@ -36,7 +36,8 @@ button { font: inherit; }
 .prayer-wheel {
   --gold: #e3bd69;
   --gold-dark: #7e5522;
-  font-size: clamp(.8rem, min(1.7rem, 6vw, 3.1vh), 1.7rem);
+  font-size: min(4.2vh, 7vw);
+  font-size: min(4.2dvh, 7vw);
   display: flex;
   flex-direction: column;
   align-items: center;
