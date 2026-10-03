@@ -12,7 +12,7 @@ PHP CLI is required. From the project root, run:
 
 Open the local address reported by the command (by default, <http://127.0.0.1:8080>). Set `PW_PORT` to use a different port.
 
-The initial catalog lives in `app/prayers.php`. It is a temporary, server-provided seed catalog; visitor contributions are deliberately deferred.
+The initial catalog lives in `app/prayers.txt`, with one prayer paragraph per blank-line-separated entry. `app/prayers.php` reads that file and serves it to the browser. It is a temporary, server-provided seed catalog; visitor contributions are deliberately deferred.
 
 ## What a spin does
 

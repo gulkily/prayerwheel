@@ -12,10 +12,19 @@ declare(strict_types=1);
  */
 function getPrayerCatalog(): array
 {
-    return [
-        [
-            'text' => 'May every turn of this wheel carry a moment of compassion into the world.',
+    $contents = file_get_contents(__DIR__ . '/prayers.txt');
+
+    if ($contents === false) {
+        throw new RuntimeException('The prayer catalog could not be read.');
+    }
+
+    $prayers = preg_split('/\R\s*\R/', trim($contents)) ?: [];
+
+    return array_map(
+        static fn (string $prayer): array => [
+            'text' => trim($prayer),
             'source' => 'Prayer for the Prayer Wheel',
         ],
-    ];
+        array_values(array_filter($prayers, static fn (string $prayer): bool => trim($prayer) !== '')),
+    );
 }
