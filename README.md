@@ -1,6 +1,6 @@
 # Prayer Wheel
 
-A browser prayer wheel that will cycle repeatable prayers in memory, without recording prayer activity.
+A traditional-looking browser prayer wheel that cycles repeatable prayers in memory, without recording prayer activity.
 
 ## Run locally
 
@@ -16,7 +16,7 @@ The initial catalog lives in `app/prayers.txt`, with one prayer paragraph per bl
 
 ## What a spin does
 
-Each spin sends the current server-provided catalog to a browser Web Worker. The worker visits one catalog prayer per iteration for exactly 1,000,000,000 iterations, allowing prayers to repeat, and then returns one prayer to display. The cycle is volatile: it does not write spin or prayer activity to a database, browser storage, log, or analytics service.
+Each spin sends the current server-provided catalog to a browser Web Worker, which visits one catalog prayer per iteration, allowing prayers to repeat, for about 5 seconds. Clicking the wheel again while it spins restarts the 5-second timer and keeps the wheel turning. When the time ends, the wheel eases to rest and shows a prayer along with the number of prayers that passed through memory. The cycle is volatile: it does not write spin or prayer activity to a database, browser storage, log, or analytics service.
 
 The initial wording is the original project prayer in `PRAYER.md`. Community-submitted prayers, storage, and moderation are intentionally outside this MVP.
 

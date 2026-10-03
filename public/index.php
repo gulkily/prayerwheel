@@ -21,16 +21,25 @@ $catalogJson = json_encode(
   <main class="page-shell">
     <header class="intro">
       <p class="eyebrow">A digital prayer wheel</p>
-      <h1>A billion moments of compassion</h1>
-      <p class="lede">With each turn, a billion prayers pass through memory—without leaving a trace on storage.</p>
+      <h1>Countless moments of compassion</h1>
+      <p class="lede">With each turn, countless prayers pass through memory—without leaving a trace on storage.</p>
     </header>
 
     <section class="wheel-section" aria-labelledby="wheel-heading">
       <h2 id="wheel-heading" class="sr-only">Prayer wheel</h2>
       <div class="wheel-halo">
         <button id="spin-button" class="prayer-wheel" type="button" aria-describedby="wheel-status">
-          <span class="wheel-rim">Spin the wheel</span>
-          <span class="wheel-core">☸</span>
+          <span class="wheel-finial" aria-hidden="true"></span>
+          <span class="wheel-cap" aria-hidden="true"></span>
+          <span class="wheel-drum">
+            <span class="wheel-panels" aria-hidden="true"></span>
+            <span class="wheel-label">
+              <span class="wheel-rim">Spin the wheel</span>
+              <span class="wheel-core" aria-hidden="true">☸</span>
+            </span>
+          </span>
+          <span class="wheel-base" aria-hidden="true"></span>
+          <span class="wheel-handle" aria-hidden="true"></span>
         </button>
       </div>
       <p id="wheel-status" class="wheel-status" aria-live="polite">The wheel is ready for your intention.</p>
