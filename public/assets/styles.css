@@ -1,17 +1,23 @@
 :root {
   color: #fff8e8;
-  background: #162827;
+  background: #0e1d20;
   font-family: Georgia, "Times New Roman", serif;
 }
 
 * { box-sizing: border-box; }
 
+html { min-height: 100%; background: #0e1d20; }
+
 body {
   min-width: 320px;
+  min-height: 100vh;
+  min-height: 100dvh;
   margin: 0;
+  overflow-x: clip;
   background:
-    radial-gradient(circle at 50% 14%, #4f7a68 0, transparent 27rem),
-    linear-gradient(145deg, #17302e, #0e1d20 70%);
+    radial-gradient(circle at 50% 30%, #4a7a68 0, #2a4c43 14rem, transparent 36rem),
+    linear-gradient(160deg, #17302e, #0e1d20 72%);
+  background-attachment: fixed;
 }
 
 button { font: inherit; }
@@ -25,100 +31,300 @@ button { font: inherit; }
 
 .wheel-section { display: grid; justify-items: center; gap: .25rem; }
 
+/* ---------- Halo: the spotlight behind the wheel ---------- */
+
 .wheel-halo {
+  position: relative;
+  isolation: isolate;
   display: grid;
   place-items: center;
-  padding: .25rem 2rem;
-  border-radius: 50%;
-  background: radial-gradient(circle, #e3bd6926 0, transparent 68%);
+  padding: .25rem 0;
 }
+
+.sprite { position: absolute; }
+
+.wheel-halo::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - min(18em, 40vw));
+  width: min(36em, 80vw);
+  pointer-events: none;
+  background: radial-gradient(closest-side, #f2cf7a66, #e3bd6918 58%, transparent);
+  opacity: .3;
+  transition: opacity .7s ease, transform .7s ease;
+}
+
+body[data-wheel-state="ready"] .wheel-halo::before { animation: breathe 5.5s ease-in-out infinite; }
+body[data-wheel-state="active"] .wheel-halo::before { opacity: 1; transform: scale(1.12); }
+body[data-wheel-state="complete"] .wheel-halo::before { animation: pulse 2.2s ease-out 1 both; }
+body[data-wheel-state="retry"] .wheel-halo::before { opacity: .08; }
+
+@keyframes breathe {
+  0%, 100% { opacity: .3; transform: scale(.96); }
+  50% { opacity: .7; transform: scale(1.04); }
+}
+
+@keyframes pulse {
+  0% { opacity: .55; transform: scale(1.06); }
+  22% { opacity: 1; transform: scale(1.22); }
+  100% { opacity: .5; transform: scale(1); }
+}
+
+/* ---------- The wheel ---------- */
 
 .prayer-wheel {
   --gold: #e3bd69;
+  --gold-light: #f6dc98;
   --gold-dark: #7e5522;
-  font-size: min(4.2vh, 7vw);
-  font-size: min(4.2dvh, 7vw);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 13em;
+  --metal: linear-gradient(90deg, #6a4519, #c79a45 14%, #f6dc98 30%, #fff0bf 36%, #e3bd69 54%, #a77a33 80%, #6a4519);
+  --r: 5.3em;
+  font-size: min(3.4vh, 5.8vw);
+  font-size: min(3.4dvh, 5.8vw);
+  position: relative;
+  display: block;
   padding: 0;
   border: 0;
   color: #fff8e8;
   background: none;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.prayer-wheel:hover .wheel-drum { filter: brightness(1.08); }
-.prayer-wheel:focus-visible { outline: 3px solid #fff8e8; outline-offset: 8px; border-radius: 1em; }
+.prayer-wheel:focus-visible { outline: 3px solid #fff8e8; outline-offset: .5em; border-radius: 1em; }
+
+.wheel-lift {
+  display: block;
+  transform-origin: 50% 92%;
+  transition: transform .4s cubic-bezier(.2, .8, .2, 1);
+}
+
+.prayer-wheel:hover .wheel-lift { transform: translateY(-.35em) rotate(-1.2deg); }
+.prayer-wheel:active .wheel-lift { transform: translateY(.2em) scale(.985); transition-duration: .08s; }
+
+.wheel-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 13em;
+  transition: filter .6s ease;
+}
+
+body[data-wheel-state="retry"] .wheel-body { filter: saturate(.3) brightness(.85); }
+
+/* Finial */
 
 .wheel-finial {
-  width: 1.1em;
+  position: relative;
+  z-index: 4;
+  width: 1.3em;
   height: 2em;
-  background: linear-gradient(90deg, var(--gold-dark), #f6dc98 45%, var(--gold-dark));
-  clip-path: polygon(50% 0, 100% 70%, 80% 100%, 20% 100%, 0 70%);
+  margin-bottom: -.4em;
+  background: radial-gradient(ellipse at 35% 40%, #fff6d3 0, #f2cf7a 35%, var(--gold-dark) 100%);
+  clip-path: polygon(50% 0, 62% 38%, 100% 64%, 74% 100%, 26% 100%, 0 64%, 38% 38%);
 }
+
+/* Cap: elliptical top face over a curved rim */
 
 .wheel-cap {
-  width: 11em;
-  height: 1.6em;
-  margin-top: -.15em;
-  border-radius: 55% 55% .3em .3em / 100% 100% .3em .3em;
-  background: linear-gradient(90deg, var(--gold-dark), #f6dc98 40%, var(--gold) 60%, var(--gold-dark));
-  box-shadow: 0 .15em .3em #02080760;
-}
-
-.wheel-drum {
   position: relative;
-  display: grid;
-  place-items: center;
-  width: 10.5em;
-  height: 9em;
-  overflow: hidden;
-  border-inline: .25em solid var(--gold-dark);
-  background: #8f2a22;
-  box-shadow: inset 0 0 1.4em #1a0403aa;
+  z-index: 3;
+  width: 13em;
+  height: 2.4em;
 }
 
-.wheel-drum::before, .wheel-drum::after {
+.wheel-cap::before {
   content: "";
   position: absolute;
   z-index: 1;
-  inset-inline: 0;
-  height: .6em;
-  background: linear-gradient(var(--gold-dark), #f6dc98 50%, var(--gold-dark));
+  inset: 0 0 auto;
+  height: 1.7em;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 38% 32%, #fff6d3 0, #f2cf7a 38%, #c8923f 76%, #8a5d22 100%);
+  box-shadow: inset 0 -.12em .22em #0006;
 }
-.wheel-drum::before { top: .9em; }
-.wheel-drum::after { bottom: .9em; }
+
+.wheel-cap::after {
+  content: "";
+  position: absolute;
+  inset: .8em 0 auto;
+  height: 1.55em;
+  border-radius: 0 0 50% 50% / 0 0 .9em .9em;
+  background: var(--metal);
+  box-shadow: 0 .3em .6em #000a;
+}
+
+/* Drum: a real cylinder of twelve faces, rotated in 3D */
+
+.wheel-drum {
+  position: relative;
+  z-index: 2;
+  width: 11em;
+  height: 10em;
+  margin-top: -.8em;
+  perspective: 70em;
+  overflow: hidden;
+  border-radius: 0 0 50% 50% / 0 0 .7em .7em;
+  background: #3a0f0c;
+}
 
 .wheel-panels {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(90deg, #00000066, transparent 18% 82%, #00000066),
-    repeating-linear-gradient(90deg, transparent 0 2.2em, #e3bd6955 2.2em 2.3em, transparent 2.3em 4.5em);
-  background-size: 100% 100%, 4.5em 100%;
+  transform-style: preserve-3d;
+  transform: translateZ(calc(var(--r) * -1));
+  will-change: transform;
 }
 
+.wheel-face {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 2.9em;
+  height: 100%;
+  margin-left: -1.45em;
+  padding: .9em 0 1em;
+  color: var(--gold);
+  background:
+    linear-gradient(#7e5522, #f6dc98 50%, #7e5522) top / 100% .55em no-repeat,
+    linear-gradient(#7e5522, #f6dc98 50%, #7e5522) bottom / 100% .55em no-repeat,
+    radial-gradient(ellipse at 50% 50%, #a8372c, #8f2a22 72%);
+  backface-visibility: hidden;
+  transform: rotateY(calc(var(--i) * 30deg)) translateZ(var(--r));
+}
+
+.wheel-face:nth-child(even) { background-color: #7c231c; }
+
+.wheel-face::before {
+  content: "";
+  position: absolute;
+  inset: .85em .2em .95em;
+  border: .08em solid #e3bd6990;
+  border-radius: .4em;
+  box-shadow: inset 0 0 .5em #0000005c, 0 .06em 0 #ffffff26;
+}
+
+.wheel-face svg { position: relative; display: block; opacity: .92; }
+.face-emblem svg { width: 1.9em; height: 1.9em; }
+.face-ornament svg { width: 1.45em; height: 2.3em; }
+
+/* Lighting that stays fixed while the faces turn */
+
+.drum-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, #0000007d 0, #0000 15%, #0000 82%, #0000008f 100%),
+    linear-gradient(90deg, #000000c2 0, #00000045 13%, #0000 26%, #fff3d638 33%, #fff3d612 40%, #0000 49%, #00000038 70%, #000000cc 100%);
+}
+
+.drum-shade::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 -40%;
+  width: 40%;
+  opacity: 0;
+  background: linear-gradient(90deg, #0000, #fff3d633, #0000);
+}
+
+body[data-wheel-state="active"] .drum-shade::after { opacity: 1; animation: sheen 1.8s linear infinite; }
+
+@keyframes sheen { to { transform: translateX(350%); } }
+
+/* Base, collar and handle */
 
 .wheel-base {
-  width: 11em;
-  height: 1.1em;
-  border-radius: .3em .3em 55% 55% / .3em .3em 100% 100%;
-  background: linear-gradient(90deg, var(--gold-dark), #f6dc98 40%, var(--gold) 60%, var(--gold-dark));
-  box-shadow: 0 .2em .4em #02080760;
+  position: relative;
+  z-index: 1;
+  width: 13em;
+  height: 2.3em;
+  margin-top: -1.2em;
+}
+
+.wheel-base::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0 0 auto;
+  height: 1.7em;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 45% 38%, #f2cf7a 0, #c8923f 55%, #7e5522 100%);
+  box-shadow: inset 0 .12em .3em #0008;
+}
+
+.wheel-base::after {
+  content: "";
+  position: absolute;
+  inset: .7em 0 auto;
+  height: 1.55em;
+  border-radius: 0 0 50% 50% / 0 0 .9em .9em;
+  background: var(--metal);
+  box-shadow: 0 .35em .7em #000b;
+}
+
+.wheel-collar {
+  position: relative;
+  z-index: 2;
+  width: 3em;
+  height: .95em;
+  margin-top: -.55em;
+  border-radius: .3em / .45em;
+  background: var(--metal);
+  box-shadow: 0 .2em .4em #0009;
 }
 
 .wheel-handle {
-  width: 1.5em;
+  position: relative;
+  z-index: 1;
+  width: 1.8em;
   height: 6em;
-  margin-top: -.1em;
-  border-radius: 0 0 .75em .75em;
-  background: linear-gradient(90deg, #3a2410, #8a5a2b 45%, #3a2410);
-  box-shadow: 0 .4em .8em #02080770;
+  margin-top: -.15em;
+  border-radius: .2em .2em .9em .9em;
+  background:
+    repeating-linear-gradient(180deg, #0000 0 1em, #0000004a 1em 1.12em),
+    linear-gradient(90deg, #2a1708, #8a5a2b 36%, #b8813f 50%, #5a3a1c 78%, #2a1708);
+  box-shadow: 0 .5em .9em #000b;
 }
 
-.wheel-status { min-height: 1.25rem; white-space: pre-line; margin: 0; color: #e3bd69; }
+/* Weighted chain and ball */
+
+.wheel-chain {
+  position: absolute;
+  z-index: 1;
+  top: 3.5em;
+  left: calc(50% + 5.9em);
+  width: 1.2em;
+  margin-left: -.6em;
+  transform-origin: 50% 0;
+  will-change: transform;
+}
+
+.wheel-chain svg { display: block; width: 1.2em; height: 8.4em; filter: drop-shadow(0 .1em .15em #0008); }
+
+/* ---------- Status and prayer ---------- */
+
+.wheel-status {
+  min-height: 3em;
+  margin: .5rem 0 0;
+  color: #e3bd69;
+  line-height: 1.5;
+  white-space: pre-line;
+  font-variant-numeric: tabular-nums;
+}
+
+body[data-wheel-state="retry"] .wheel-status { color: #ffc6a6; }
+
+/* The completion message wraps on narrow screens; reserve its full height so nothing shifts. */
+@media (max-width: 30rem) { .wheel-status { min-height: 4.5em; } }
+@media (max-width: 23rem) { .wheel-status { min-height: 6em; } }
 
 .about { max-width: 34rem; margin: .75rem auto 0; color: #c7d1c3; line-height: 1.6; }
 
@@ -131,16 +337,28 @@ button { font: inherit; }
   box-shadow: 0 .7rem 2rem #02080735;
 }
 
-.prayer-text { margin: 0; font-size: clamp(1.25rem, 4vw, 1.7rem); font-style: italic; line-height: 1.45; }
+.prayer-text {
+  min-height: calc(1.45em * 3);
+  margin: 0;
+  font-size: clamp(1.25rem, 4vw, 1.7rem);
+  font-style: italic;
+  line-height: 1.45;
+}
+
 .prayer-source { margin: 1rem 0 0; color: #c7d1c3; font-family: Arial, sans-serif; font-size: .85rem; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
 
-body[data-wheel-state="complete"] .wheel-drum { box-shadow: inset 0 0 1.4rem #1a0403aa, 0 0 2rem #e3bd69aa; }
-body[data-wheel-state="retry"] .wheel-status { color: #ffc6a6; }
-
-
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; } }
+/* ---------- Reduced motion: state shown through glow and text only ---------- */
 
 @media (prefers-reduced-motion: reduce) {
-  body[data-wheel-state="active"] .wheel-drum { box-shadow: inset 0 0 1.4rem #1a0403aa, 0 0 1.5rem #e3bd69; }
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .prayer-wheel:hover .wheel-lift,
+  .prayer-wheel:active .wheel-lift { transform: none; }
+  body[data-wheel-state="active"] .drum-shade::after { display: none; }
 }
