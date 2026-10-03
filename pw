@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+port="${PW_PORT:-8080}"
+
+if [[ "${1:-}" != "start" || "$#" -ne 1 ]]; then
+  echo "Usage: ./pw start" >&2
+  exit 64
+fi
+
+if ! command -v php >/dev/null 2>&1; then
+  echo "PHP is required. Install the PHP CLI, then run ./pw start again." >&2
+  exit 69
+fi
+
+echo "Prayer Wheel is running at http://127.0.0.1:${port}"
+exec php -S "127.0.0.1:${port}" -t "${project_root}/public"
