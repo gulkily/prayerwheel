@@ -36,3 +36,15 @@
   - A source scan found no client/server storage, database, tracking, or logging APIs in the app source.
 - Notes:
   - The available Chromium package could not start headlessly in this container because of its Snap mount-namespace restriction; the real browser interaction still needs a final local desktop smoke test.
+
+## Stage 4 - Demo hardening and handoff
+
+- Changes:
+  - Added recovery for a browser that cannot create the cycle worker.
+  - Added clear original-prayer provenance, deferred-contribution context, and run/cycle behavior documentation.
+- Verification:
+  - `php -l app/prayers.php`, `php -l public/index.php`, and both JavaScript syntax checks passed.
+  - `PW_PORT=8787 ./pw start` served the page and worker at the reported local address.
+  - A fresh exact-billion worker harness completed in 2,752 ms with 20 progress events; an app-source scan found no persistence or tracking APIs.
+- Notes:
+  - The container’s Chromium Snap package cannot launch headlessly, so the final pointer/keyboard browser smoke test should be run locally with `./pw start` before the hackathon demo.

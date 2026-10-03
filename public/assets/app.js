@@ -44,7 +44,12 @@
     }
 
     setWheelState('active');
-    cycleWorker = new Worker('/assets/prayer-cycle-worker.js');
+    try {
+      cycleWorker = new Worker('/assets/prayer-cycle-worker.js');
+    } catch {
+      showRetry('The cycle could not begin. Please turn the wheel again.');
+      return;
+    }
 
     cycleWorker.addEventListener('message', ({ data }) => {
       if (data.type === 'progress') {

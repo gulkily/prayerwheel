@@ -43,7 +43,7 @@ $catalogJson = json_encode(
       <p id="prayer-source" class="prayer-source"></p>
     </section>
 
-    <p class="catalog-note">This is a small, server-provided seed catalog. Community prayer additions are coming in a future release.</p>
+    <p class="catalog-note">The initial wording is an original project prayer in a small, server-provided seed catalog. Community prayer additions are coming in a future release.</p>
   </main>
   <script id="prayer-catalog" type="application/json"><?= $catalogJson ?></script>
   <script src="/assets/app.js"></script>
