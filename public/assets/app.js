@@ -7,12 +7,16 @@
   const catalog = JSON.parse(catalogElement.textContent);
   const panels = document.querySelector('.wheel-panels');
   const spinDuration = 5000;
-  const restDuration = 700;
+  const startSpeed = 1.5;
+  const speedBoost = 1;
+  const maxSpeed = 4;
   const statusInterval = 250;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let cycleWorker;
   let stopTimer;
   let spinAnimation;
+  let spinSpeed = 0;
+  let spinStartedAt = 0;
   let lastStatusAt = 0;
 
   const messages = {
@@ -33,7 +37,9 @@
   };
 
   const startSpinAnimation = () => {
-    spinAnimation?.cancel();
+    stopSpinAnimation();
+    spinSpeed = startSpeed;
+    spinStartedAt = performance.now();
     if (reducedMotion.matches || !panels.animate) {
       return;
     }
@@ -42,26 +48,24 @@
       [{ backgroundPosition: '0 0, 0 0' }, { backgroundPosition: '0 0, 4.5rem 0' }],
       { duration: 1200, iterations: Infinity },
     );
+    spinAnimation.playbackRate = spinSpeed;
+    requestAnimationFrame(tickSpin);
   };
 
-  const easeToRest = () => {
-    const animation = spinAnimation;
-    spinAnimation = undefined;
-    if (!animation) {
+  const currentSpeed = (now = performance.now()) => spinSpeed * Math.max(0, 1 - (now - spinStartedAt) / spinDuration);
+
+  const tickSpin = (now) => {
+    if (!spinAnimation) {
       return;
     }
 
-    const began = performance.now();
-    const slow = (now) => {
-      const progress = Math.min(1, Math.max(0, (now - began) / restDuration));
-      animation.playbackRate = (1 - progress) ** 2;
-      if (progress < 1) {
-        requestAnimationFrame(slow);
-      } else {
-        animation.cancel();
-      }
-    };
-    requestAnimationFrame(slow);
+    spinAnimation.playbackRate = currentSpeed(now);
+    requestAnimationFrame(tickSpin);
+  };
+
+  const stopSpinAnimation = () => {
+    spinAnimation?.cancel();
+    spinAnimation = undefined;
   };
 
   const finishCycle = () => {
@@ -71,15 +75,24 @@
     cycleWorker = undefined;
   };
 
-  const extendSpin = () => {
+  const resetStopTimer = () => {
     clearTimeout(stopTimer);
     stopTimer = setTimeout(() => cycleWorker?.postMessage({ type: 'stop' }), spinDuration);
   };
 
+  const extendSpin = () => {
+    const now = performance.now();
+    spinSpeed = Math.min(maxSpeed, currentSpeed(now) + speedBoost);
+    spinStartedAt = now;
+    if (spinAnimation) {
+      spinAnimation.playbackRate = spinSpeed;
+    }
+    resetStopTimer();
+  };
+
   const showRetry = (message) => {
     finishCycle();
-    spinAnimation?.cancel();
-    spinAnimation = undefined;
+    stopSpinAnimation();
     setWheelState('retry');
     status.textContent = message;
   };
@@ -112,7 +125,7 @@
         finishCycle();
         setWheelState('complete');
         status.textContent = `${data.completed.toLocaleString()} prayers passed through memory. ${messages.complete}`;
-        easeToRest();
+        stopSpinAnimation();
         return;
       }
 
@@ -125,7 +138,7 @@
 
     startSpinAnimation();
     cycleWorker.postMessage({ type: 'start', prayers });
-    extendSpin();
+    resetStopTimer();
   };
 
   showPrayer(catalog[0]);

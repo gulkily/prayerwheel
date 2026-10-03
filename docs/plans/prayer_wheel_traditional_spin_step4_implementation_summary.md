@@ -50,3 +50,17 @@
 - Notes:
   - Still needed from a person at a desktop browser: the Step 2 timing trials (5 s ± 0.5 s plain; 10 of 10 re-click trials), the visual look at desktop and phone widths, keyboard activation, reduced motion, and an empty-storage check in dev tools.
   - Earlier MVP plan docs still describe the exact-billion behavior; they are historical and were left unchanged.
+
+## Follow-up - Spin acceleration and gradual slowdown
+
+- Changes:
+  - Requested after Step 4 as a small tweak to Stage 3 behavior, so it was done as one follow-up commit without a new planning cycle.
+  - The drum starts at 1.5x speed and slows linearly to a stop over the 5 seconds after the latest click, replacing the 0.7 s ease-to-rest.
+  - Each re-click adds 1x to the current speed (capped at 4x) and restarts the 5-second slowdown; the speed is applied immediately.
+  - Constants: `startSpeed`, `speedBoost`, `maxSpeed` in `public/assets/app.js`.
+- Verification:
+  - `node --check public/assets/app.js` passed.
+  - Fake-DOM harness: rate 1.5 at start, 0.75 at 2.5 s, +1 on re-click (to 0.88 after 2.5 s more of decay), 3rd click to 1.87, many rapid clicks capped at about 4, rate 0.08 at 4.9 s after the last click, `stop` sent after 5 s, one worker and one animation throughout, animation cancelled on `complete`.
+- Notes:
+  - Whether the speeds and linear slowdown feel right needs a look in a real browser; tune the three constants if not.
+  - Reduced-motion visitors have no animation, so they get no acceleration cue beyond the existing glow.
