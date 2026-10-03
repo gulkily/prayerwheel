@@ -24,3 +24,15 @@
   - Local HTTP checks returned the page, the state helper, stylesheet, and spin control successfully.
 - Notes:
   - Stage 3 will wire the control to the real in-memory cycle; this stage only establishes its canonical presentation and state surface.
+
+## Stage 3 - Billion-prayer in-memory cycle
+
+- Changes:
+  - Added a Web Worker that visits one catalog entry per iteration and emits 20 truthful progress updates during an exact billion-iteration cycle.
+  - Wired the wheel control to the worker, completion prayer, interruption/error retry state, and unload cleanup.
+- Verification:
+  - `node --check public/assets/app.js` and `node --check public/assets/prayer-cycle-worker.js` passed.
+  - A worker-contract harness completed 1,000,000,000 iterations in 3,210 ms, emitted 20 progress events, and returned the expected completion count.
+  - A source scan found no client/server storage, database, tracking, or logging APIs in the app source.
+- Notes:
+  - The available Chromium package could not start headlessly in this container because of its Snap mount-namespace restriction; the real browser interaction still needs a final local desktop smoke test.
