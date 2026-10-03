@@ -29,8 +29,17 @@ $catalogJson = json_encode(
       <h2 id="wheel-heading" class="sr-only">Prayer wheel</h2>
       <div class="wheel-halo">
         <button id="spin-button" class="prayer-wheel" type="button" aria-describedby="wheel-status">
-          <span class="wheel-rim">Spin the wheel</span>
-          <span class="wheel-core">☸</span>
+          <span class="wheel-finial" aria-hidden="true"></span>
+          <span class="wheel-cap" aria-hidden="true"></span>
+          <span class="wheel-drum">
+            <span class="wheel-panels" aria-hidden="true"></span>
+            <span class="wheel-label">
+              <span class="wheel-rim">Spin the wheel</span>
+              <span class="wheel-core" aria-hidden="true">☸</span>
+            </span>
+          </span>
+          <span class="wheel-base" aria-hidden="true"></span>
+          <span class="wheel-handle" aria-hidden="true"></span>
         </button>
       </div>
       <p id="wheel-status" class="wheel-status" aria-live="polite">The wheel is ready for your intention.</p>
