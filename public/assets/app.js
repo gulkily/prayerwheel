@@ -124,7 +124,7 @@
         showPrayer(data.prayer);
         finishCycle();
         setWheelState('complete');
-        status.textContent = `${data.completed.toLocaleString()} prayers passed through memory. ${messages.complete}`;
+        status.textContent = `${data.completed.toLocaleString()} prayers passed through memory.\n${messages.complete}`;
         stopSpinAnimation();
         return;
       }

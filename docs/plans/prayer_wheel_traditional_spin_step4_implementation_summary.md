@@ -87,3 +87,12 @@
   - `php -l public/index.php` passed; headless Chrome screenshot at 1000x1000 shows the wheel, the paragraph, then the prayer card.
 - Notes:
   - The paragraph says "about five seconds"; update it if the spin duration constant changes.
+
+## Follow-up - Completion message on two lines
+
+- Changes:
+  - The completion status now shows the prayer count on one line and "The wheel is at rest. May its intention travel with you." on the next (`white-space: pre-line` on `.wheel-status`).
+- Verification:
+  - `node --check public/assets/app.js` passed; the status string contains a newline before the closing sentence.
+- Notes:
+  - Not checked in a real browser after a completed spin.

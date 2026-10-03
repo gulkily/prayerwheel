@@ -117,7 +117,7 @@ button { font: inherit; }
   box-shadow: 0 .4em .8em #02080770;
 }
 
-.wheel-status { min-height: 1.25rem; margin: 0; color: #e3bd69; }
+.wheel-status { min-height: 1.25rem; white-space: pre-line; margin: 0; color: #e3bd69; }
 
 .about { max-width: 34rem; margin: .75rem auto 0; color: #c7d1c3; line-height: 1.6; }
 
