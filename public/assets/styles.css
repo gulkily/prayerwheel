@@ -19,13 +19,9 @@ button { font: inherit; }
 .page-shell {
   width: min(100% - 2rem, 44rem);
   margin: 0 auto;
-  padding: 1.75rem 0 2rem;
+  padding: 1rem 0 2rem;
   text-align: center;
 }
-
-.intro { max-width: 38rem; margin: 0 auto 1rem; }
-
-h1 { margin: 0; font-size: clamp(1.4rem, 4vw, 2rem); font-weight: normal; line-height: 1.1; }
 
 .wheel-section { display: grid; justify-items: center; gap: .25rem; }
 
@@ -123,8 +119,10 @@ h1 { margin: 0; font-size: clamp(1.4rem, 4vw, 2rem); font-weight: normal; line-h
 
 .wheel-status { min-height: 1.25rem; margin: 0; color: #e3bd69; }
 
+.about { max-width: 34rem; margin: .75rem auto 0; color: #c7d1c3; line-height: 1.6; }
+
 .prayer-card {
-  margin: 1.25rem 0 0;
+  margin: 1.75rem 0 0;
   padding: 1.25rem 1.5rem;
   border: 1px solid #ffffff2e;
   border-radius: 1rem;

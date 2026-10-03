@@ -19,10 +19,7 @@ $catalogJson = json_encode(
 </head>
 <body>
   <main class="page-shell">
-    <header class="intro">
-      <h1>Countless moments of compassion</h1>
-    </header>
-
+    <h1 class="sr-only">Prayer Wheel</h1>
     <section class="wheel-section" aria-labelledby="wheel-heading">
       <h2 id="wheel-heading" class="sr-only">Prayer wheel</h2>
       <div class="wheel-halo">
@@ -39,6 +36,8 @@ $catalogJson = json_encode(
       </div>
       <p id="wheel-status" class="wheel-status" aria-live="polite"></p>
     </section>
+
+    <p class="about">Click the wheel to spin it. For about five seconds, your browser cycles through a small catalog of prayers over and over, as many times as it can, and then shows how many prayers passed through. Click again while it is spinning to speed it up and keep it going. Everything happens in your device's memory; nothing is saved or recorded.</p>
 
     <section class="prayer-card" aria-labelledby="prayer-heading">
       <h2 id="prayer-heading" class="sr-only">Current prayer</h2>

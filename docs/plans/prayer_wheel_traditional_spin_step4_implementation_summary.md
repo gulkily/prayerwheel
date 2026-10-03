@@ -77,3 +77,13 @@
 - Notes:
   - A 390 px wide headless screenshot appeared cropped, which looks like headless Chrome's minimum window width rather than overflow; confirm on a real phone or with device emulation.
   - The drum scroll distance in `app.js` is now `4.5em` to match the stylesheet.
+
+## Follow-up - Header removed, description added
+
+- Changes:
+  - Removed the visible "Countless moments of compassion" heading; a screen-reader-only `h1` ("Prayer Wheel") keeps the page structure.
+  - Added one plain paragraph below the wheel explaining the spin, the count, the re-click and the no-storage behavior.
+- Verification:
+  - `php -l public/index.php` passed; headless Chrome screenshot at 1000x1000 shows the wheel, the paragraph, then the prayer card.
+- Notes:
+  - The paragraph says "about five seconds"; update it if the spin duration constant changes.
