@@ -5,7 +5,6 @@
   const prayer = document.querySelector('#current-prayer');
   const source = document.querySelector('#prayer-source');
   const catalog = JSON.parse(catalogElement.textContent);
-  const prayerTarget = 1_000_000_000;
   let cycleWorker;
 
   const messages = {
@@ -37,7 +36,7 @@
     status.textContent = message;
   };
 
-  const startPrayerCycle = (prayers, targetCount) => {
+  const startPrayerCycle = (prayers) => {
     if (cycleWorker || prayers.length === 0) {
       showRetry('The cycle could not begin. Please turn the wheel again.');
       return;
@@ -57,7 +56,7 @@
         return;
       }
 
-      if (data.type === 'complete' && data.completed === targetCount) {
+      if (data.type === 'complete') {
         showPrayer(data.prayer);
         finishCycle();
         setWheelState('complete');
@@ -71,12 +70,13 @@
       showRetry('The cycle paused before completion. You may turn the wheel again.');
     });
 
-    cycleWorker.postMessage({ type: 'start', prayers, targetCount });
+    cycleWorker.postMessage({ type: 'start', prayers });
   };
 
   showPrayer(catalog[0]);
   setWheelState('ready');
-  spinButton.addEventListener('click', () => startPrayerCycle(catalog, prayerTarget));
+  spinButton.addEventListener('click', () => startPrayerCycle(catalog));
   window.addEventListener('beforeunload', finishCycle);
-  window.prayerWheel = { catalog, setWheelState, showPrayer, startPrayerCycle, spinButton };
+  const stopPrayerCycle = () => cycleWorker?.postMessage({ type: 'stop' });
+  window.prayerWheel = { stopPrayerCycle, catalog, setWheelState, showPrayer, startPrayerCycle, spinButton };
 })();

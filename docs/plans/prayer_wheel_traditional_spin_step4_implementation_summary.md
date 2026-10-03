@@ -11,3 +11,16 @@
 - Notes:
   - No browser is available in this environment, so the visual look, focus ring and Enter/Space activation still need a desktop check.
   - The existing one-billion cycle is unchanged until Stage 2.
+
+## Stage 2 - Time-boxed, stoppable cycle
+
+- Changes:
+  - Worker now takes `start` with the catalog only, cycles in 200,000-prayer slices that yield to the event loop, reports `progress`, and on `stop` replies `complete` with the count and last prayer.
+  - Page calls `startPrayerCycle(prayers)`; the fixed one-billion target is removed. `window.prayerWheel.stopPrayerCycle()` sends `stop` (used for verification; Stage 3 wires it to the deadline).
+- Verification:
+  - `node --check` passed for `app.js` and the worker.
+  - A Node worker-thread harness ran the worker for 2 s, then sent `stop`: it returned `complete` with 142,400,000 prayers (~71M/s), stop latency 1 ms (target < 50 ms), 712 progress messages and a prayer object.
+- Notes:
+  - Until Stage 3, a spin only ends when `stopPrayerCycle()` is called from the console, so this commit is an intermediate state.
+  - The status text still says "carrying your prayers"; the count display and copy are updated in Stages 3 and 4.
+  - About 350 progress messages per second is more than the page needs; Stage 3 may throttle the status update.
