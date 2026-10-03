@@ -24,3 +24,16 @@
   - Until Stage 3, a spin only ends when `stopPrayerCycle()` is called from the console, so this commit is an intermediate state.
   - The status text still says "carrying your prayers"; the count display and copy are updated in Stages 3 and 4.
   - About 350 progress messages per second is more than the page needs; Stage 3 may throttle the status update.
+
+## Stage 3 - 5-second spin with re-click extension
+
+- Changes:
+  - The page keeps one 5-second stop timer; `extendSpin()` resets it. A click while spinning calls `extendSpin()` and does not create a worker or restart the animation; the button is no longer disabled while active.
+  - The drum animation moved from CSS to a Web Animations object on `.wheel-panels`, so it can ease to rest (700 ms) when the worker reports `complete`; reduced-motion visitors skip the animation and keep the glowing drum.
+  - Status text updates at most every 250 ms while spinning and reports the real count on completion.
+- Verification:
+  - `node --check public/assets/app.js` passed.
+  - A Node harness with a fake DOM, fake `Worker` and virtual clock: click starts one worker and sends `start`; a re-click at 3 s leaves one worker and one animation; `stop` is not sent at 7.9 s and is sent by 8.1 s (5 s after the re-click); `complete` shows the count, terminates the worker and cancels the eased animation; a new click starts a fresh worker; a worker error shows the retry state.
+- Notes:
+  - Real-browser timing (10 plain and 10 re-click trials), visual smoothness on rapid clicks, keyboard use and reduced-motion still need a desktop check; no browser is available here.
+  - A click in the short window after `stop` is sent but before `complete` arrives only resets a timer that `finishCycle` then clears, so that click is absorbed.

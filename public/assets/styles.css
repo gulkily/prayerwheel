@@ -150,12 +150,9 @@ h1 { margin: 0; font-size: clamp(2.25rem, 8vw, 4.5rem); font-weight: normal; lin
 .catalog-note { margin: 1.5rem auto 0; max-width: 36rem; font-size: .92rem; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
 
-body[data-wheel-state="active"] .wheel-panels { animation: turn 1.2s linear infinite; }
-body[data-wheel-state="active"] .prayer-wheel { cursor: wait; }
 body[data-wheel-state="complete"] .wheel-drum { box-shadow: inset 0 0 1.4rem #1a0403aa, 0 0 2rem #e3bd69aa; }
 body[data-wheel-state="retry"] .wheel-status { color: #ffc6a6; }
 
-@keyframes turn { to { background-position: 0 0, 4.5rem 0; } }
 
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; } }
 
