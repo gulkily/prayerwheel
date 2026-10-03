@@ -106,3 +106,12 @@
 - Notes:
   - The description and prayer card now sit below the fold and need a scroll.
   - Very short, wide windows make the wheel small because height is the limit.
+
+## Follow-up - No jump when the wheel stops
+
+- Changes:
+  - The drum animation was cancelled when a spin ended, which snapped the panels back to their starting position. It is now one persistent animation that is paused at rest and played again on the next spin, so the wheel stops, and later resumes, exactly where it is.
+- Verification:
+  - Real headless Chrome driven over the DevTools protocol: the panel offset eased from 15.51 px (4.6 s) to 17.99 px at the stop (5.01 s) and stayed at 17.99 px for the next 4 s; the next click resumed from 17.99 px (20.58 px two frames later).
+- Notes:
+  - Reduced-motion visitors have no animation, so nothing changes for them.

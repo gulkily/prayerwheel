@@ -14,6 +14,7 @@
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let cycleWorker;
   let stopTimer;
+  let wheelAnimation;
   let spinAnimation;
   let spinSpeed = 0;
   let spinStartedAt = 0;
@@ -44,11 +45,13 @@
       return;
     }
 
-    spinAnimation = panels.animate(
+    wheelAnimation ??= panels.animate(
       [{ backgroundPosition: '0 0, 0 0' }, { backgroundPosition: '0 0, 4.5em 0' }],
       { duration: 1200, iterations: Infinity },
     );
+    spinAnimation = wheelAnimation;
     spinAnimation.playbackRate = spinSpeed;
+    spinAnimation.play();
     requestAnimationFrame(tickSpin);
   };
 
@@ -64,7 +67,7 @@
   };
 
   const stopSpinAnimation = () => {
-    spinAnimation?.cancel();
+    spinAnimation?.pause();
     spinAnimation = undefined;
   };
 
